@@ -9,7 +9,6 @@ public class MaterialHolder {
 	public MaterialHolder(Material m) {
 		this.m = m;
 	}
-	
 
 	public boolean isSuccess() {
 		return success;
@@ -26,5 +25,4 @@ public class MaterialHolder {
 	public void setM(Material m) {
 		this.m = m;
 	}
-	
 }

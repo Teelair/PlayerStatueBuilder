@@ -17,7 +17,6 @@ import com.skytechbytes.playerstatuebuilder.Log;
  *
  */
 public class StatueMaker extends BukkitRunnable {
-	
 	private final Schematic s;
 
 	private final Location origin;
@@ -34,23 +33,16 @@ public class StatueMaker extends BukkitRunnable {
 		this.params = flags;
 		this.origin = origin;
 	}
-	private void initialize() {
-		FaceBuilder.minor_orientation = 0;
 
-		//String d = getDirection(p.getLocation().getYaw());
-		String d = direction;
-		//Log.log(d);
-		
-		if (d.equals("North")) {
-			FaceBuilder.minor_orientation = 1;
-		} else if (d.equals("East")) {
-			FaceBuilder.minor_orientation = 2;
-		} else if (d.equals("West")) {
-			FaceBuilder.minor_orientation = 3;
-		} else if (d.equals("South")) {
-			FaceBuilder.minor_orientation = 0;
-		}
+	private void initialize() {
+        switch (direction) {
+            case "North" -> FaceBuilder.minor_orientation = 1;
+            case "East" -> FaceBuilder.minor_orientation = 2;
+            case "West" -> FaceBuilder.minor_orientation = 3;
+            case "South" -> FaceBuilder.minor_orientation = 0;
+        }
 	}
+
 	protected void generateStatueSchematic() throws Exception {
 		/*
 		 * Types of blocks flags
@@ -58,19 +50,31 @@ public class StatueMaker extends BukkitRunnable {
 		
 		ColorMaps.getActiveColorMaps().clear();
 		
-		if (params.containsKey("wool")) ColorMaps.getActiveColorMaps().add(C.WOOL);
+		if (params.containsKey("wool")) {
+			ColorMaps.getActiveColorMaps().add(C.WOOL);
+		}
 		
-		if (params.containsKey("planks")) ColorMaps.getActiveColorMaps().add(C.PLANKS);
+		if (params.containsKey("planks")) {
+			ColorMaps.getActiveColorMaps().add(C.PLANKS);
+		}
 		
-		if (params.containsKey("terracotta")) ColorMaps.getActiveColorMaps().add(C.TERRACOTTA);
+		if (params.containsKey("terracotta")) {
+			ColorMaps.getActiveColorMaps().add(C.TERRACOTTA);
+		}
 		
-		if (params.containsKey("concrete")) ColorMaps.getActiveColorMaps().add(C.CONCRETE);
+		if (params.containsKey("concrete")) {
+			ColorMaps.getActiveColorMaps().add(C.CONCRETE);
+		}
 		
-		if (params.containsKey("glass")) ColorMaps.getActiveColorMaps().add(C.GLASS);
+		if (params.containsKey("glass")) {
+			ColorMaps.getActiveColorMaps().add(C.GLASS);
+		}
 		
-		if (params.containsKey("gray")) ColorMaps.getActiveColorMaps().add(C.GRAY);
+		if (params.containsKey("gray")) {
+			ColorMaps.getActiveColorMaps().add(C.GRAY);
+		}
 		
-		if (ColorMaps.getActiveColorMaps().size() == 0) {
+		if (ColorMaps.getActiveColorMaps().isEmpty()) {
 			ColorMaps.getActiveColorMaps().add(C.WOOL);
 			ColorMaps.getActiveColorMaps().add(C.PLANKS);
 			ColorMaps.getActiveColorMaps().add(C.TERRACOTTA);
@@ -87,27 +91,23 @@ public class StatueMaker extends BukkitRunnable {
 		} else {
 			FaceBuilder.master_orientation = 0;
 		}
-		
-		if (mode.equals("default")) {
-			this.makeStatueSchematic(origin, bi);
-		} else if (mode.equals("slim")) {
-			this.makeSlimStatueSchematic(origin, bi);
-		} else if (mode.equals("legacy")) {
-			this.makeLegacyStatueSchematic(origin, bi);
-		} else {
-			this.makeStatueSchematic(origin, bi);
-		}
+
+        switch (mode) {
+            case "slim" -> this.makeSlimStatueSchematic(origin, bi);
+            case "legacy" -> this.makeLegacyStatueSchematic(origin, bi);
+            default -> this.makeStatueSchematic(origin, bi);
+        }
 	}
+
 	/**
 	 * Actually make the statue from the sketchpad
 	 */
 	protected void createStatue() {
-
 		Log.log("Creating Structure...");
 
 		s.createSchematic(false, false);
-
 	}
+
 	@Override
 	public void run() {
 		try {
@@ -117,34 +117,30 @@ public class StatueMaker extends BukkitRunnable {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Warning: the original image is not changed in this process. A new image is returned.
-	 * @param l
 	 * @param ss
 	 * @return
-	 * @throws Exception 
-	 */
-	private BufferedImage preProcessing(Location l, BufferedImage ss) throws Exception {
+     */
+	private BufferedImage preProcessing(BufferedImage ss) {
 		/*
 		 * Add armor to the player if they request it (or just add parts)
 		 */
-		
 		BufferedImage customizedImage = ImageUtil.deepCopy(ss);
-		
 		customizedImage = ImageUtil.applyFilters(customizedImage, params);
-		
 		for (String key : AssetManager.armor.keySet()) {
-			if (params.keySet().contains(key)) {
+			if (params.containsKey(key)) {
 				// Since BufferedImage is mutable, I should be able to modify the bufferedImage inside the method and it should reflect outside.
 				
 				customizedImage = ImageUtil.overlayImage(customizedImage, AssetManager.armor.get(key));
-				
 			}
 		}
+
 		return customizedImage;
-		
 	}
-	private void right_leg(FaceBuilder fb, Reader r, Location l, BufferedImage ss) throws Exception {
+
+	private void right_leg(FaceBuilder fb, Reader r, Location l, BufferedImage ss) {
 		// Right Leg
 				fb.buildFace(l, r.part(ss, 8, 16, 4, 4), 1,0,1,-3,false,true);
 				fb.buildFace(l, r.part(ss, 0, 20, 4, 12), 2,0,0,-3);
@@ -158,7 +154,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12, 20+16, 4, 12), 0,0,0,-4,true,false);
 				fb.buildFace(l, r.part(ss, 4, 20+16, 4, 12), 0,0,0,1);
 	}
-	private void left_leg(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void left_leg(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Left Leg
 				fb.buildFace(l, r.part(ss, 8+16, 16+32, 4, 4), 1,0+4,1,-3,false,true);
 				fb.buildFace(l, r.part(ss, 24, 52, 4, 12), 2,0+7,0,-3,true,false);
@@ -172,7 +169,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12+16-16, 20+32, 4, 12), 0,0+4,0,-4,true,false);
 				fb.buildFace(l, r.part(ss, 4+16-16, 20+32, 4, 12), 0,0+4,0,1);
 	}
-	private void body(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void body(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Body
 				fb.buildFace(l, r.part(ss, 20, 20, 8, 12), 0,0,12,0);
 				fb.buildFace(l, r.part(ss, 32, 20, 8, 12), 0,0,12,-3,true,false);
@@ -180,7 +178,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 20, 20+16, 8, 12), 0,0,12,1);
 				fb.buildFace(l, r.part(ss, 32, 20+16, 8, 12), 0,0,12,-4,true,false);
 	}
-	private void right_arm(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void right_arm(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Right Arm
 				fb.buildFace(l, r.part(ss, 8+40, 16, 4, 4), 1,0-4,1+12,-3,false,true);
 				fb.buildFace(l, r.part(ss, 0+40, 20, 4, 12), 2,0-4,0+12,-3);
@@ -194,7 +193,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12+40, 20+16, 4, 12), 0,0-4,0+12,-3-1,true,false);
 				fb.buildFace(l, r.part(ss, 4+40, 20+16, 4, 12), 0,0-4,0+12,1);
 	}
-	private void left_arm(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void left_arm(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Left Arm
 				fb.buildFace(l, r.part(ss, 8+16+16, 16+32, 4, 4), 1,0+4+4,1+12,-3,false,true);
 				fb.buildFace(l, r.part(ss, 24+16, 52, 4, 12), 2,0+7+4,0+12,-3,true,false);
@@ -208,7 +208,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12+16+16+16, 20+32, 4, 12), 0,0+4+4,0+12,-3-1,true,false);
 				fb.buildFace(l, r.part(ss, 4+16+16+16, 20+32, 4, 12), 0,0+4+4,0+12,1);
 	}
-	private void head(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void head(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Head
 				fb.buildFace(l, r.part(ss, 16, 0, 8, 8), 1,0,1+24,-5,false,true);
 				fb.buildFace(l, r.part(ss, 0, 8, 8, 8), 2,0,0+24,-5);
@@ -224,7 +225,7 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 8+32, 8, 8, 8), 0,0,24,2+1);
 	}
 	
-	private void right_arm_slim(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+	private void right_arm_slim(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Right Arm
 				fb.buildFace(l, r.part(ss, 8+40-1, 16, 3, 4), 1,0-4+1,1+12,-3,false,true);
 				fb.buildFace(l, r.part(ss, 0+40, 20, 4, 12), 2,0-4+1,0+12,-3);//Done
@@ -238,7 +239,8 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12+40-1, 20+16, 3, 12), 0,0-4+1,0+12,-3-1,true,false);
 				fb.buildFace(l, r.part(ss, 4+40, 20+16, 3, 12), 0,0-4+1,0+12,1);
 	}
-	private void left_arm_slim(FaceBuilder fb,Reader r,Location l, BufferedImage ss) throws Exception {
+
+	private void left_arm_slim(FaceBuilder fb,Reader r,Location l, BufferedImage ss) {
 		// Left Arm
 				fb.buildFace(l, r.part(ss, 8+16+16-1, 16+32, 3, 4), 1,0+4+4,1+12,-3,false,true);
 				fb.buildFace(l, r.part(ss, 24+16-1, 52, 4, 12), 2,0+7+4-1,0+12,-3,true,false);//Done
@@ -252,6 +254,7 @@ public class StatueMaker extends BukkitRunnable {
 				fb.buildFace(l, r.part(ss, 12+16+16+16-1, 20+32, 3, 12), 0,0+4+4,0+12,-3-1,true,false);
 				fb.buildFace(l, r.part(ss, 4+16+16+16, 20+32, 3, 12), 0,0+4+4,0+12,1);
 	}
+
 	private boolean isSlimSkin(BufferedImage xx) {
 		if (xx.getWidth() < 64 || xx.getHeight() < 64) {
 			return false;
@@ -260,12 +263,14 @@ public class StatueMaker extends BukkitRunnable {
 		if (new Color(xx.getRGB(54, 20), true).getAlpha() < 255) {
 			return true;
 		}
+
 		if (new Color(xx.getRGB(46, 52), true).getAlpha() < 255) {
 			return true;
 		}
+
 		return false;
-		
 	}
+
 	/**
 	 * Warning: the original "xx" image should not be changed (other than to convert to the new skin format). ONLY modify the ss image.
 	 * @param l
@@ -284,7 +289,7 @@ public class StatueMaker extends BukkitRunnable {
 			return;
 		}
 		
-		BufferedImage ss = preProcessing(l,xx);
+		BufferedImage ss = preProcessing(xx);
 
 		//0 is vertical |_
 		//1 is flat |-
@@ -301,22 +306,27 @@ public class StatueMaker extends BukkitRunnable {
 			right_leg(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("left_leg")) {
 			left_leg(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("body")) {
 			body(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("right_arm")) {
 			right_arm(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("left_arm")) {
 			left_arm(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("head")) {
 			head(fb,r,l,ss);
 			builtSomething = true;
@@ -331,18 +341,17 @@ public class StatueMaker extends BukkitRunnable {
 			left_arm(fb,r,l,ss);
 			head(fb,r,l,ss);
 		}
-		
 	}
+
 	private void makeSlimStatueSchematic(Location l, BufferedImage xx) throws Exception {
 		initialize();
 		
 		if (xx.getHeight() < 64) {
 			makeSlimStatueSchematic(l,LegacyConverter.convertLegacy(xx,true));
-
 			return;
 		}
 		
-		BufferedImage ss = preProcessing(l,xx);
+		BufferedImage ss = preProcessing(xx);
 		
 		//0 is vertical |_
 		//1 is flat |-
@@ -359,22 +368,27 @@ public class StatueMaker extends BukkitRunnable {
 			right_leg(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("left_leg")) {
 			left_leg(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("body")) {
 			body(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("right_arm")) {
 			right_arm_slim(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("left_arm")) {
 			left_arm_slim(fb,r,l,ss);
 			builtSomething = true;
 		}
+
 		if (flags.contains("head")) {
 			head(fb,r,l,ss);
 			builtSomething = true;
@@ -389,25 +403,25 @@ public class StatueMaker extends BukkitRunnable {
 			left_arm_slim(fb,r,l,ss);
 			head(fb,r,l,ss);
 		}
-
 	}
 	
 	private void makeLegacyStatueSchematic(Location l, BufferedImage ss) throws Exception {
 		makeStatueSchematic(l,LegacyConverter.convertLegacy(ss,false));
-		
 	}
+
 	protected LinkedHashMap<String, Float> getParams() {
-		return this.params;
+		return params;
 	}
 	
 	protected Schematic getSchematic() {
-		return this.s;
+		return s;
 	}
+
 	public void setImage(BufferedImage bi) {
 		this.bi = bi;
 	}
+
 	public BufferedImage getImage() {
-		return this.bi;
+		return bi;
 	}
-	
 }

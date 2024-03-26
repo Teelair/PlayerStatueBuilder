@@ -3,9 +3,6 @@ package com.skytechbytes.playerstatuebuilder.builder;
 import org.bukkit.Material;
 
 public class BuildUtils {
-
-	public BuildUtils() {
-	}
 	/**
 	 * Thank you stackoverflow
 	 * Assume not weird matrix with non-null values
@@ -23,7 +20,6 @@ public class BuildUtils {
 	}
 
 	public static void flipHorizontal(Material[][] matrix){
-
 		for(int row = 0; row < matrix.length; row++){
 			for(int col = 0; col < matrix[row].length / 2; col++) {
 				Material temp = matrix[row][col];
@@ -31,7 +27,5 @@ public class BuildUtils {
 				matrix[row][matrix[row].length - col - 1] = temp;
 			}
 		}
-
 	}
-
 }

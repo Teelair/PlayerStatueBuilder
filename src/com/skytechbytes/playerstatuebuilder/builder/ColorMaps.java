@@ -16,20 +16,16 @@ import org.bukkit.Material;
  *
  */
 public class ColorMaps {
-	static Map<Color,Material> x = new HashMap<>();
-	static Map<Color,Material> p = new HashMap<>();
-	static Map<Color,Material> t = new HashMap<>();
-	static Map<Color,Material> c = new HashMap<>();
-	static Map<Color,Material> g = new HashMap<>();
-	static Map<Color,Material> w = new HashMap<>();
+	static Map<Color, Material> x = new HashMap<>();
+	static Map<Color, Material> p = new HashMap<>();
+	static Map<Color, Material> t = new HashMap<>();
+	static Map<Color, Material> c = new HashMap<>();
+	static Map<Color, Material> g = new HashMap<>();
+	static Map<Color, Material> w = new HashMap<>();
 	
-	static List<Map<Color,Material>> colorMaps = new ArrayList<>();
-	
+	static List<Map<Color, Material>> colorMaps = new ArrayList<>();
 	static List<Integer> activeColorMaps = new ArrayList<>();
 
-	public ColorMaps() {
-
-	}
 	static {
 		x.put(new Color(0xE9ECEC), Material.WHITE_WOOL);
 		x.put(new Color(0xF07613), Material.ORANGE_WOOL);
@@ -55,7 +51,7 @@ public class ColorMaps {
 		p.put(new Color(38,19,2),Material.DARK_OAK_PLANKS);
 		p.put(new Color(184,101,53),Material.ACACIA_PLANKS);
 		p.put(new Color(131, 68, 50), Material.MANGROVE_PLANKS);
-		
+
 		/*
 		p.put(new Color(214, 189, 85), Material.BAMBOO_PLANKS);
 		p.put(new Color(222, 161, 154), Material.CHERRY_PLANKS);
@@ -142,26 +138,28 @@ public class ColorMaps {
 		if (alpha < 255) {
 			return Material.AIR;
 		}
+
 		Material temp = Material.AIR;
 		int smallestDifference = Integer.MAX_VALUE;
 		for (int i = 0 ; i < colorMaps.size() ; i++) {
 			if (!activeColorMaps.contains(i)) {
 				continue;
 			}
-			Map<Color,Material> x = colorMaps.get(i);
-			Set<Color> keys = x.keySet();
-			for(Color key: keys){
-				int difference = (int) (Math.pow(key.getRed()-r,2) + Math.pow(key.getGreen()-g,2) + Math.pow(key.getBlue()-b,2));
+
+			Map<Color, Material> x = colorMaps.get(i);
+			for(Color key : x.keySet()) {
+				int difference = (int) (Math.pow(key.getRed() - r, 2) + Math.pow(key.getGreen() - g, 2) + Math.pow(key.getBlue() - b, 2));
 				if (difference < smallestDifference) {
 					temp = x.get(key);
 					smallestDifference = difference;
 				}
 			}
 		}
+
 		return temp;
 	}
+
 	public static List<Integer> getActiveColorMaps() {
 		return activeColorMaps;
 	}
-	
 }

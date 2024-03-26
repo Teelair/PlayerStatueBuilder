@@ -11,7 +11,6 @@ import com.jhlabs.image.PosterizeFilter;
 import com.jhlabs.image.SaturationFilter;
 
 public class ImageUtil {
-	
 	public static BufferedImage overlayImage(BufferedImage below, BufferedImage above) {
 		BufferedImage newImage = new BufferedImage(below.getWidth(),below.getHeight(),BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = newImage.createGraphics();
@@ -21,8 +20,8 @@ public class ImageUtil {
 	    g.dispose();
 
 	    return newImage;
-		
 	}
+
 	/**
 	 * Thanks Stackoverflow
 	 * @param source
@@ -35,6 +34,7 @@ public class ImageUtil {
 	    g.dispose();
 	    return b;
 	}
+
 	/**
 	 * Required to un-index a file (change it to RGB mode from Index color mode)
 	 * @param i
@@ -48,49 +48,47 @@ public class ImageUtil {
 	
 	public static BufferedImage applyFilters(BufferedImage bi, LinkedHashMap<String,Float> params) {
 		// BufferedImage newImage = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_ARGB);
-		
 		for (String key : params.keySet()) {
 			if (key.equalsIgnoreCase("contrast")) {
-				checkParams(key, params.get(key), 0, 1);
+				checkParams(key, params.get(key));
 				ContrastFilter cf = new ContrastFilter();
 				cf.setContrast(params.get(key));
 				bi = cf.filter(bi, null);
 			}
+
 			if (key.equalsIgnoreCase("brightness")) {
-				checkParams(key, params.get(key), 0, 1);
+				checkParams(key, params.get(key));
 				ContrastFilter cf = new ContrastFilter();
 				cf.setBrightness(params.get(key));
 				bi = cf.filter(bi, null);
 			}
+
 			if (key.equalsIgnoreCase("saturation")) {
-				checkParams(key, params.get(key), 0, 1);
+				checkParams(key, params.get(key));
 				SaturationFilter sf = new SaturationFilter();
 				sf.setAmount(params.get(key));
 				bi = sf.filter(bi,  null);
 			}
+
 			if (key.equalsIgnoreCase("hue")) {
-				checkParams(key, params.get(key), 0, 1);
+				checkParams(key, params.get(key));
 				HSBAdjustFilter hsb = new HSBAdjustFilter();
 				hsb.setHFactor(params.get(key));
 				bi = hsb.filter(bi, null);
 			}
+
 			if (key.equalsIgnoreCase("posterize")) {
 				PosterizeFilter p = new PosterizeFilter();
 				p.setNumLevels(Math.round(params.get(key)));
 				bi = p.filter(bi, null);
 			}
-//			if (key.equalsIgnoreCase("quantize")) {
-//				QuantizeFilter qf = new QuantizeFilter();
-//				qf.setNumColors(Math.round(params.get(key)));
-//				bi = qf.filter(bi, null);
-//			}
 		}
 		return bi;
-		
 	}
-	private static void checkParams(String name, Float in, float low, float high) throws IllegalArgumentException {
-		if (in == null || in < low || in > high) {
-			throw new IllegalArgumentException("Parameter " + name + " must be in the range " + low + " to " + high);
+
+	private static void checkParams(String name, Float in) throws IllegalArgumentException {
+		if (in == null || in < (float) 0 || in > (float) 1) {
+			throw new IllegalArgumentException("Parameter " + name + " must be in the range " + (float) 0 + " to " + (float) 1);
 		}
 	}
 }

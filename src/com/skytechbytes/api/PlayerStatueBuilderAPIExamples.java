@@ -20,8 +20,6 @@ public class PlayerStatueBuilderAPIExamples {
 			PlayerStatueBuilderAPI.createStatue("SkyTechBytes", new Location(w, 0, 80, 20), "North", "default", params);
 			
 			PlayerStatueBuilderAPI.createStatue("SkyTechBytes", new Location(w, 0, 80, 20), "North", "default", "planks", "gray", "body", "head", "left_arm", "right_arm");
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

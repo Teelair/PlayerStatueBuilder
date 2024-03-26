@@ -3,6 +3,7 @@ package com.skytechbytes.playerstatuebuilder.builder;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,14 +18,13 @@ import com.skytechbytes.playerstatuebuilder.PlayerStatueBuilder;
  *
  */
 public class PlayerStatueMaker extends StatueMaker {
-	
-	public static HashMap<String,Long> cooldowns = new HashMap<>();
+	public static Map<String, Long> cooldowns = new HashMap<>();
 	
 	private final Player p;
 	private final boolean quote;
 
 	public PlayerStatueMaker(Player p, String mode, BufferedImage bi, boolean quote, LinkedHashMap<String, Float> flags) {
-		super( new Location(
+		super(new Location(
 				p.getLocation().getWorld(), 
 				p.getLocation().getBlockX(), 
 				p.getLocation().getBlockY() + 3, 
@@ -34,6 +34,7 @@ public class PlayerStatueMaker extends StatueMaker {
 		this.p = p;
 		this.quote = quote;
 	}
+
 	/**
 	 * Converts a rotation to a cardinal direction name.
 	 * From sk89qs's command book plugin
@@ -44,6 +45,7 @@ public class PlayerStatueMaker extends StatueMaker {
 		if (rot < 0) {
 			rot += 360;
 		}
+
 		if (0 <= rot && rot < 45) {
 			return "North";
 		} else if (45 <= rot && rot < 135) {
@@ -58,15 +60,17 @@ public class PlayerStatueMaker extends StatueMaker {
 			Log.log("The Player's direction is somehow negative or greater than 360. Might want to report this.");
 			return "North";
 		}
-		
 	}
+
 	public boolean hasCooldown(Player p) {
 		if (p.hasPermission("playerstatuebuilderx.noWait")) {
 			return false;
 		}
+
 		if (cooldowns.get(p.getName()) == null) {
 			return false;
 		}
+
 		//cooldown has passed
 		if (cooldowns.get(p.getName()) < System.currentTimeMillis()) {
 			return false;
@@ -80,6 +84,7 @@ public class PlayerStatueMaker extends StatueMaker {
 		p.sendMessage(ChatColor.RED + "You've created a statue recently. Please wait at least " + min + " minutes and " + sec + " seconds.");
 		return true;
 	}
+
 	@Override
 	protected void generateStatueSchematic() throws Exception {
 		/*
@@ -99,7 +104,6 @@ public class PlayerStatueMaker extends StatueMaker {
 	 */
 	@Override
 	protected void createStatue() {
-
 		if (quote) {
 			SchematicUtil.query(this.getSchematic(), p);
 			return;
@@ -131,15 +135,15 @@ public class PlayerStatueMaker extends StatueMaker {
 		cooldowns.put(p.getName(), System.currentTimeMillis() + PlayerStatueBuilder.instance.getConfig().getInt("cooldown") * 60000L);
 		
 		p.sendMessage(ChatColor.GREEN + "Statue Created!");
-
 	}
+
 	@Override
 	public void run() {
-		
 		try {
 			if (this.getImage() == null) {
 				throw new Exception("Failed to obtain that player's skin. Please check spelling or try again later.");
 			}
+
 			super.generateStatueSchematic();
 			this.createStatue();
 		} catch (Exception e) {
@@ -147,6 +151,4 @@ public class PlayerStatueMaker extends StatueMaker {
 			p.sendMessage(ChatColor.RED + "Error! " + e.getMessage());
 		}
 	}
-	
-	
 }

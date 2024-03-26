@@ -23,8 +23,7 @@ public class PlayerStatueBuilderAPI {
 	 * @throws IllegalStateException 
 	 * @throws IllegalArgumentException 
 	 */
-	public static void createStatue(String skinIdentifier, Location origin, String direction, String mode, LinkedHashMap<String, Float> params) 
-			throws IllegalArgumentException, IllegalStateException, Exception {
+	public static void createStatue(String skinIdentifier, Location origin, String direction, String mode, LinkedHashMap<String, Float> params) throws IllegalArgumentException, IllegalStateException, Exception {
 		new StatueBuildTask(skinIdentifier, new StatueMaker(origin, direction, mode, Util.getSkinImage(skinIdentifier), params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
 	}
 	/**
@@ -40,12 +39,12 @@ public class PlayerStatueBuilderAPI {
 	 * @throws IllegalStateException 
 	 * @throws IllegalArgumentException 
 	 */
-	public static void createStatue(String skinIdentifier, Location origin, String direction, String mode, String... params) 
-			throws IllegalArgumentException, IllegalStateException, Exception {
+	public static void createStatue(String skinIdentifier, Location origin, String direction, String mode, String... params) throws IllegalArgumentException, IllegalStateException, Exception {
 		LinkedHashMap<String, Float> temp = new LinkedHashMap<>();
 		for (String param : params) {
 			temp.put(param, 0f);
 		}
+
 		createStatue(skinIdentifier, origin, direction, mode, temp);
 	}
 }

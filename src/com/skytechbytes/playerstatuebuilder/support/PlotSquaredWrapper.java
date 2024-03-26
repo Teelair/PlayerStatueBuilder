@@ -13,8 +13,7 @@ import org.bukkit.entity.Player;
 public class PlotSquaredWrapper {
     private final BukkitPlatform plotSquared;
 
-    public PlotSquaredWrapper() throws Exception
-    {
+    public PlotSquaredWrapper() throws Exception {
         this.plotSquared = (BukkitPlatform) PlayerStatueBuilder.instance.getServer().getPluginManager().getPlugin("PlotSquared");
 
         if (plotSquared == null) {
@@ -24,8 +23,7 @@ public class PlotSquaredWrapper {
         }
     }
 
-    public boolean canBuild(Location lesserCorner, Location greaterCorner, Player creatingPlayer)
-    {
+    public boolean canBuild(Location lesserCorner, Location greaterCorner, Player creatingPlayer) {
         // dependency failed to load, assume ok to build
         if (plotSquared == null) {
             return true;
@@ -33,8 +31,7 @@ public class PlotSquaredWrapper {
             Log.log("Checking permissions");
         }
         // only build if player is in a plot owned by themselves
-        try
-        {
+        try {
             com.plotsquared.core.location.Location plotSquaredlesserCorner = BukkitUtil.adapt(lesserCorner);
             com.plotsquared.core.location.Location plotSquaredGreaterCorner = BukkitUtil.adapt(greaterCorner);
 
@@ -42,6 +39,7 @@ public class PlotSquaredWrapper {
             if (plot == null) {
                 return false; // possibly a road, they aren't on a plot owned by themselves
             }
+
             if (!plot.isOwner(creatingPlayer.getUniqueId()) && !plot.isAdded(creatingPlayer.getUniqueId())) {
                 return false; // neither added to the plot nor the owner of the plot
             }
@@ -78,9 +76,7 @@ public class PlotSquaredWrapper {
                 }
             }
             return statueContainedInOneRegion;
-        }
-        catch (Throwable sandal)
-        {
+        } catch (Throwable sandal) {
             sandal.printStackTrace();
         }
         // plot squared loaded but something else went wrong

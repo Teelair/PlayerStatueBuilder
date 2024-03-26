@@ -18,10 +18,10 @@ import com.skytechbytes.playerstatuebuilder.Log;
  */
 public class Schematic {
 	public static Stack<Schematic> history = new Stack<>();
+
 	/*
 	 * Hashception
 	 */
-
 	private final HashMap<Integer,HashMap<Integer,HashMap<Integer,MaterialHolder>>> matrix = new HashMap<>();
 	private final World w;
 	private int count = 0; //Count of non-air blocks
@@ -35,6 +35,7 @@ public class Schematic {
 	int minX = Integer.MAX_VALUE;
 	int minY = Integer.MAX_VALUE;
 	int minZ = Integer.MAX_VALUE;
+
 	/**
 	 * You can put in world coordinates or small relative coordinates- it really shouldn't matter
 	 * @param x
@@ -43,20 +44,38 @@ public class Schematic {
 	 * @param m
 	 */
 	public void setBlockAt(int x, int y, int z, Material m) {
+		if (x > maxX) {
+			maxX = x;
+		}
 
-		if (x > maxX) maxX = x;
-		if (y > maxY) maxY = y;
-		if (z > maxZ) maxZ = z;
-		if (x < minX) minX = x;
-		if (y < minY) minY = y;
-		if (z < minZ) minZ = z;
+		if (y > maxY) {
+			maxY = y;
+		}
+
+		if (z > maxZ) {
+			maxZ = z;
+		}
+
+		if (x < minX) {
+			minX = x;
+		}
+
+		if (y < minY) {
+			minY = y;
+		}
+
+		if (z < minZ) {
+			minZ = z;
+		}
 
 		if (!matrix.containsKey(z)) {
-			matrix.put(z, new HashMap<Integer,HashMap<Integer,MaterialHolder>>() );
+			matrix.put(z, new HashMap<>() );
 		}
+
 		if (!matrix.get(z).containsKey(y)) {
-			matrix.get(z).put(y, new HashMap<Integer,MaterialHolder>());
+			matrix.get(z).put(y, new HashMap<>());
 		}
+
 		if (!matrix.get(z).get(y).containsKey(x)) {
 			matrix.get(z).get(y).put(x, new MaterialHolder(Material.AIR));
 		}
@@ -67,10 +86,9 @@ public class Schematic {
 		if (previous == Material.AIR && replacement.getM() != Material.AIR) {
 			count++;
 		}
-		
 	}
-	public boolean createSchematic(boolean eraseMode, boolean replaceAirOnly) {
 
+	public void createSchematic(boolean eraseMode, boolean replaceAirOnly) {
 		for (int keyZ : matrix.keySet()) {
 			for (int keyY : matrix.get(keyZ).keySet()) {
 				for (int keyX : matrix.get(keyZ).get(keyY).keySet()) {
@@ -81,7 +99,7 @@ public class Schematic {
 						continue;
 					}
 					//WARNING: DO NOT CHANGE
-					Block b = w.getBlockAt(new Location(w,keyX,keyY,keyZ));
+					Block b = w.getBlockAt(new Location(w, keyX, keyY, keyZ));
 					if (replaceAirOnly) {
 						//We only replace AIR blocks in the world!
 						if (!b.getType().equals(Material.AIR)) {
@@ -98,8 +116,7 @@ public class Schematic {
 					 */
 					if (eraseMode &&
 							mat.isSuccess() &&
-							b.getBlockData().getMaterial().equals(matrix.get(keyZ).get(keyY).get(keyX).getM())) 
-					{
+							b.getBlockData().getMaterial().equals(matrix.get(keyZ).get(keyY).get(keyX).getM())) {
 						b.setType(Material.AIR);
 						continue;
 					} else if (eraseMode) {
@@ -111,41 +128,47 @@ public class Schematic {
 				}
 			}
 		}
+
 		if (!eraseMode) {
 			Log.log("Statue Created");
 	
 			Schematic.history.add(this);
 		}
-		return true;
 	}
+
 	public HashMap<Integer, HashMap<Integer, HashMap<Integer, MaterialHolder>>> getMatrix() {
 		return matrix;
 	}
+
 	public int getCount() {
 		return count;
 	}
+
 	public int getMaxX() {
 		return maxX;
 	}
+
 	public int getMaxY() {
 		return maxY;
 	}
+
 	public int getMaxZ() {
 		return maxZ;
 	}
+
 	public int getMinX() {
 		return minX;
 	}
+
 	public int getMinY() {
 		return minY;
 	}
+
 	public int getMinZ() {
 		return minZ;
 	}
+
 	public World getWorld() {
 		return this.w;
 	}
-	
-
-
 }

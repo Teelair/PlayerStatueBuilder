@@ -10,7 +10,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class VaultWrapper {
-
     private Economy econ = null;
     private final Permission perms = null;
     private final Chat chat = null;
@@ -21,6 +20,7 @@ public class VaultWrapper {
             Log.log("Vault with economy provider not detected. You MUST have the Vault Plugin if you want PlayerStatueBuilderX to interact with the economy.");
             throw new Exception();
         }
+
         Log.log("Vault detected!");
     }
     
@@ -28,11 +28,13 @@ public class VaultWrapper {
         if (p.getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
+
         RegisteredServiceProvider<Economy> rsp = p.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             Log.log("Vault detected, but no vault economy provider detected!");
             return false;
         }
+
         econ = rsp.getProvider();
         return econ != null;
     }
@@ -40,11 +42,11 @@ public class VaultWrapper {
     public Economy getEconomy() {
         return econ;
     }
-    
+
     public Permission getPermissions() {
         return perms;
     }
-    
+
     public Chat getChat() {
         return chat;
     }

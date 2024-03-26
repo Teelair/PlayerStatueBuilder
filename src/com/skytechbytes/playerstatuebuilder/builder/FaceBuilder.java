@@ -20,7 +20,7 @@ public class FaceBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param o
 	 * @param matrix
 	 * @param orientation is x/y or x/z or y/z
@@ -33,18 +33,20 @@ public class FaceBuilder {
 		buildFace(o, matrix, orientation, off1, off2, off3, false, false);
 	}
 
-	public void buildFace(Location o, Material[][] matrix, int orientation, int off1, int off2, int off3, boolean flipH,
-			boolean flipV) {
-		World w = o.getWorld();
-
+	public void buildFace(Location o, Material[][] matrix, int orientation, int off1, int off2, int off3, boolean flipH, boolean flipV) {
 		if (matrix == null) {
 			return;
 		}
-		if (flipH)
-			BuildUtils.flipHorizontal(matrix);
-		if (flipV)
-			BuildUtils.flipVertical(matrix);
 
+		if (flipH) {
+			BuildUtils.flipHorizontal(matrix);
+		}
+
+		if (flipV) {
+			BuildUtils.flipVertical(matrix);
+		}
+
+		World w = o.getWorld();
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[y].length; x++) {
 				if (master_orientation == 0) {
@@ -74,19 +76,12 @@ public class FaceBuilder {
 		switch (minor_orientation) {
 			case 0 -> ll(w, o.getBlockX() + off1, o.getBlockY() + off2, o.getBlockZ() + off3, m);
 			case 1 -> ll(w, o.getBlockX() - off1, o.getBlockY() + off2, o.getBlockZ() - off3, m);
-			case 2 -> ll(w, o.getBlockX() + off3, o.getBlockY() + off2, o.getBlockZ() - off1, m);// fixed by swapping +off1 to
-
-			// -off1
-			case 3 -> ll(w, o.getBlockX() - off3, o.getBlockY() + off2, o.getBlockZ() + off1, m);// fixed by swapping -off1 to
-
-			// +off1
+			case 2 -> ll(w, o.getBlockX() + off3, o.getBlockY() + off2, o.getBlockZ() - off1, m); // fixed by swapping +off1 to -off1
+			case 3 -> ll(w, o.getBlockX() - off3, o.getBlockY() + off2, o.getBlockZ() + off1, m); // fixed by swapping -off1 to +off1
 		}
-
 	}
 
 	private void ll(World w, int off1, int off2, int off3, Material m) {
-		// w.getBlockAt(off1,off2,off3).setType(m);
 		statue.setBlockAt(off1, off2, off3, m);
 	}
-
 }

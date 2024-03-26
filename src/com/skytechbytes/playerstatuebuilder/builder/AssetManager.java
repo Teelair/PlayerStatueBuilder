@@ -19,8 +19,6 @@ public class AssetManager {
 	public static HashMap<String,BufferedImage> items = new HashMap<>();
 	private static final String[] armor_materials = {"chainmail","iron","golden","diamond"};
 	public static void initialize() {
-		
-		
 		for (String material : armor_materials) {
 			
 			load(material + "_armor",armor);
@@ -30,9 +28,8 @@ public class AssetManager {
 			load(material + "_chestplate",armor,material + "_armor",new Rectangle(16,32,48,32));
 			load(material + "_boots",armor,material + "_armor",new Rectangle(0,32,16,32));
 		}
-		
-		
 	}
+
 	public static void load(String name, HashMap<String,BufferedImage> group) {
 		try {
 			String file = "/" + name + ".png";
@@ -47,18 +44,17 @@ public class AssetManager {
 	 */
 	public static void load(String name, HashMap<String,BufferedImage> group, String baseImage, Rectangle... subregions) {
 		try {
-		
 			BufferedImage base = group.get(baseImage);
 			
-			if (base == null) return;
+			if (base == null) {
+				return;
+			}
 			
 			//Don't forget the A in ARGB (we have alpha)
 			BufferedImage subImage = new BufferedImage(base.getWidth(),base.getHeight(),BufferedImage.TYPE_INT_ARGB);
 			
 			Graphics g = subImage.getGraphics();
-			
 			for (Rectangle region : subregions) {
-				
 				g.drawImage(
 						base.getSubimage((int)region.getX(), (int)region.getY(),
 								(int)region.getWidth(), 
@@ -76,6 +72,5 @@ public class AssetManager {
 		} catch (Exception e) {
 			Log.log("Failed to load texture " + name);
 		}
-		
 	}
 }

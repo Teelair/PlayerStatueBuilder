@@ -1,8 +1,6 @@
 package com.skytechbytes.playerstatuebuilder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,43 +11,45 @@ import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
 public class StatueTabComplete implements TabCompleter {
-
 	@Override
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-		if (sender instanceof Player p) {
-			if (command.getName().equalsIgnoreCase("statue")) {
-				if (args.length > 1) {
-					List<String> list = Lists.asList("", args);
-					HashSet<String> hs = new HashSet<>(list);
-					HashSet<String> a = new HashSet<>();
-					a.add("glass");
-					a.add("concrete");
-					a.add("terracotta");
-					a.add("planks");
-					a.add("gray");
-					a.add("wool");
-					a.add("slim");
-					a.add("legacy");
-					a.add("default");
-					a.add("hue:");
-					a.add("iron_armor");
-					a.add("diamond_armor");
-					a.add("chainmail_armor");
-					a.add("golden_armor");
-					if (p.hasPermission("playerstatuebuilderx.specialOrientations")) {
-						a.add("xy");
-						a.add("xz");
-						a.add("yz");
-					}
-					//Remove auto complete options we already used
-					for (String param : hs) {
-						a.remove(param);
-					}
-					return new ArrayList<>(a);
-				}
-			}
+		if (!command.getName().equalsIgnoreCase("statue")) {
+			return null;
 		}
-		return null;
-	}
 
+		if (!(sender instanceof Player p)) {
+			return null;
+		}
+
+		if (args.length < 2) {
+			return Collections.emptyList();
+		}
+
+		List<String> autoCompletions = new ArrayList<>();
+		autoCompletions.add("glass");
+		autoCompletions.add("concrete");
+		autoCompletions.add("terracotta");
+		autoCompletions.add("planks");
+		autoCompletions.add("gray");
+		autoCompletions.add("wool");
+		autoCompletions.add("slim");
+		autoCompletions.add("legacy");
+		autoCompletions.add("default");
+		autoCompletions.add("hue:");
+		autoCompletions.add("iron_armor");
+		autoCompletions.add("diamond_armor");
+		autoCompletions.add("chainmail_armor");
+		autoCompletions.add("golden_armor");
+		if (p.hasPermission("playerstatuebuilderx.specialOrientations")) {
+			autoCompletions.add("xy");
+			autoCompletions.add("xz");
+			autoCompletions.add("yz");
+		}
+
+		for (String arg : args) {
+			autoCompletions.remove(arg);
+		}
+
+		return autoCompletions;
+	}
 }

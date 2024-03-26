@@ -14,16 +14,15 @@ public class StatueBuildTask extends BukkitRunnable {
 		this.identifier = identifier;
 		this.callback = callback;
 	}
+
 	@Override
 	public void run() {
 		try {
 			BufferedImage bi = ImageUtil.deepCopy(Util.getSkinImage(identifier));
-			
 			callback.setImage(bi);
 		} catch (Exception e) {
 			Log.log(e.getMessage());
 		}
 		callback.runTask(PlayerStatueBuilder.instance);
 	}
-
 }

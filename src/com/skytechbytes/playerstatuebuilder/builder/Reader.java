@@ -23,22 +23,14 @@ public class Reader {
 
 		return new Color(red,green,blue,alpha);
 	}
-	public BufferedImage read() throws IOException {
-		BufferedImage bi;
 
-		bi = ImageIO.read(new File("str2.png"));
-		
-		return bi;
-	}
-	public Material[][] part(BufferedImage bi) {
-		return part(bi,0,0,bi.getWidth(),bi.getHeight());
-	}
 	public Material[][] part(BufferedImage bi,int lx, int ly, int sx, int sy) {
 		try {
 			bi = bi.getSubimage(lx, ly, sx, sy);
 		} catch (Exception e) {
 			return null;
 		}
+
 		Material[][] mats = new Material[bi.getHeight()][bi.getWidth()];
 		for (int y = 0 ; y < bi.getHeight() ; y++) {
 			for (int x = 0 ; x < bi.getWidth() ; x++) {
@@ -46,7 +38,7 @@ public class Reader {
 				mats[y][x] = ColorMaps.getMatchingMaterial(val.getRed(), val.getGreen(), val.getBlue(), val.getAlpha());
 			}
 		}
+
 		return mats;
 	}
-	
 }

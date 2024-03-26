@@ -16,6 +16,7 @@ public class StatueConfiguration {
             if (!p.getDataFolder().exists()) {
                 p.getDataFolder().mkdirs();
             }
+
             File file = new File(p.getDataFolder(), "config.yml");
             if (!file.exists()) {
                 Log.log("Config.yml not found, creating!");
@@ -25,13 +26,10 @@ public class StatueConfiguration {
             }
         } catch (Exception e) {
             e.printStackTrace();
-
         }
-        
-
     }
+
 	private void loadDefaultConfigFile() {
-	       
         FileConfiguration c = p.getConfig();
         
         ArrayList<String> headerContents = new ArrayList<>();

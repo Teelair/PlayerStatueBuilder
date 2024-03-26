@@ -17,8 +17,7 @@ public class PlayerStatueBuilder extends JavaPlugin {
 	public static VaultWrapper vw = null;
 	public static PlotSquaredWrapper plotw = null;
 	public static StatueConfiguration sc;
-	public PlayerStatueBuilder() {
-	}
+
 	 // Fired when plugin is first enabled
     @Override
     public void onEnable() {
@@ -56,13 +55,6 @@ public class PlayerStatueBuilder extends JavaPlugin {
     	
     	// Bstats begins here
     	int pluginId = 7093;
-    	Metrics m = new Metrics(this,pluginId);
-    	// int version = Metrics.B_STATS_VERSION;
-    	
-    }
-    // Fired when plugin is disabled
-    @Override
-    public void onDisable() {
-
+    	new Metrics(this, pluginId);
     }
 }
