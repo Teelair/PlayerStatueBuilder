@@ -1,17 +1,21 @@
 package com.skytechbytes.playerstatuebuilder;
 
+import com.google.gson.Gson;
+import com.skytechbytes.playerstatuebuilder.objects.PlayerInfo;
+import com.skytechbytes.playerstatuebuilder.objects.PlayerSkin;
+import com.skytechbytes.playerstatuebuilder.objects.SkinDetails;
+import com.skytechbytes.playerstatuebuilder.objects.Texture;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
-
-import com.skytechbytes.playerstatuebuilder.builder.ImageUtil;
 /**
  *
  * @author SkyTechBytes
@@ -19,10 +23,10 @@ import com.skytechbytes.playerstatuebuilder.builder.ImageUtil;
  *
  */
 public class Util {
-	private static final Map<String,BufferedImage> cache = new ConcurrentHashMap<>();
+	private static final Map<String, BufferedImage> cache = new ConcurrentHashMap<>();
 
 	public static BufferedImage getSkinImage(String name) throws Exception {
-		BufferedImage bi = null;
+		BufferedImage bi;
 		if (!cache.containsKey(name)) {
 			if (isDiskSkin(name)) {
 				bi = getDiskSkinImage(name);
@@ -32,6 +36,7 @@ public class Util {
 		} else {
 			bi = cache.get(name);
 		}
+
 		return bi;
 	}
 
@@ -40,7 +45,7 @@ public class Util {
 	}
 
 	public static BufferedImage getDiskSkinImage(String name) throws Exception {
-		BufferedImage bi = null;
+		BufferedImage bi;
 		/*
 		 * The skin is on the local disk in the plugin's data folder.
 		 */
@@ -58,7 +63,6 @@ public class Util {
 			fileName = fileName + ".png";
 		}
 
-
 		try {
 			Path customFile = Paths.get(PlayerStatueBuilder.instance.getDataFolder().toURI().resolve(fileName));
 
@@ -68,66 +72,31 @@ public class Util {
 				throw new Exception();
 			}
 		} catch (Exception e) {
-			throw new Exception("Unable to load file from plugin data folder. Make sure the name is spelled correctly and the skin"
-					+ " image file is in the same folder as the config file.");
+			throw new Exception("Unable to load file from plugin data folder. Make sure the name is spelled correctly and the skin image file is in the same folder as the config file.");
 		}
-		return ImageUtil.deepCopy(bi);
+
+		return bi;
 	}
 
 	private static String getUUID(String name) throws Exception {
-		String uuid = "";
 		try {
-			String json = APIWrapper.readJsonFromUrl("https://playerdb.co/api/player/minecraft/" + name);
-
-			uuid = json.substring(json.indexOf("raw_id\":")+9, json.indexOf("raw_id\":")+9+32);
-
-			Log.log(uuid);
+			Gson gson = new Gson();
+			PlayerInfo info = gson.fromJson(APIWrapper.readJsonFromUrl("https://api.mojang.com/users/profiles/minecraft/" + name), PlayerInfo.class);
+			return info.id();
 		} catch (Exception e) {
 			throw new Exception("Failed to lookup uuid, likely because player specified does not exist.");
-
 		}
-		return uuid;
 	}
 
 	public static BufferedImage getCloudSkinImage(String name) throws Exception {
-		BufferedImage bi;
-
-		/*
-		 * If the skin has no prefix, it is a normal skin that must be retrieved from the cloud.
-		 */
-
-		try {
-			URL url1 = new URL("https://mineskin.eu/download/" + name);
-
-			bi = ImageIO.read(url1);
-			if (bi != null) {
-				return ImageUtil.deepCopy(bi);
-			}
-		} catch (IOException e) {
-			Log.log("Could not obtain skin from mineskin.eu");
-		}
-
 		/*
 		 * Obtain player UUID to try alternate endpoints
 		 */
 		String uuid = getUUID(name);
-
-		/*
-		 * Try endpoints that require player uuid
-		 */
-		String[] endpoints = { "https://mc-heads.net/download/", "https://crafatar.com/skins/" };
-		for (String endpoint : endpoints) {
-			try {
-				URL url = new URL(endpoint + uuid);
-				bi = ImageIO.read(url);
-				if (bi != null) {
-					return ImageUtil.deepCopy(bi);
-				}
-			} catch (IOException e) {
-				Log.log("Could not obtain skin from " + endpoint);
-			}
-		}
-
-		throw new Exception("Could not obtain skin from the API or backup API. Please try again later.");
+		Gson gson = new Gson();
+		PlayerSkin skin = gson.fromJson(APIWrapper.readJsonFromUrl("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid), PlayerSkin.class);
+		SkinDetails details = gson.fromJson(new String(Base64.getDecoder().decode(skin.properties()[0].value())), SkinDetails.class);
+		Texture texture = details.textures().get("SKIN");
+		return ImageIO.read(new URL(texture.url()));
 	}
 }
