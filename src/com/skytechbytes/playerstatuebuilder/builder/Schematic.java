@@ -17,12 +17,12 @@ import com.skytechbytes.playerstatuebuilder.Log;
  *
  */
 public class Schematic {
-	public static Stack<Schematic> history = new Stack<>();
+	public static final Stack<Schematic> history = new Stack<>();
 
 	/*
 	 * Hashception
 	 */
-	private final HashMap<Integer,HashMap<Integer,HashMap<Integer,MaterialHolder>>> matrix = new HashMap<>();
+	private final HashMap<Integer, HashMap<Integer, HashMap<Integer, MaterialHolder>>> matrix = new HashMap<>();
 	private final World w;
 	private int count = 0; //Count of non-air blocks
 	public Schematic (World w) {
@@ -44,46 +44,21 @@ public class Schematic {
 	 * @param m
 	 */
 	public void setBlockAt(int x, int y, int z, Material m) {
-		if (x > maxX) {
-			maxX = x;
-		}
+		maxX = Math.max(maxX, x);
+		maxY = Math.max(maxY, y);
+		maxZ = Math.max(maxZ, z);
+		minX = Math.min(minX, x);
+		minY = Math.min(minY, y);
+		minZ = Math.min(minZ, z);
 
-		if (y > maxY) {
-			maxY = y;
-		}
+		matrix.computeIfAbsent(z, unused -> new HashMap<>())
+				.computeIfAbsent(y, unused -> new HashMap<>())
+				.put(x, new MaterialHolder(Material.AIR));
 
-		if (z > maxZ) {
-			maxZ = z;
-		}
-
-		if (x < minX) {
-			minX = x;
-		}
-
-		if (y < minY) {
-			minY = y;
-		}
-
-		if (z < minZ) {
-			minZ = z;
-		}
-
-		if (!matrix.containsKey(z)) {
-			matrix.put(z, new HashMap<>() );
-		}
-
-		if (!matrix.get(z).containsKey(y)) {
-			matrix.get(z).put(y, new HashMap<>());
-		}
-
-		if (!matrix.get(z).get(y).containsKey(x)) {
-			matrix.get(z).get(y).put(x, new MaterialHolder(Material.AIR));
-		}
-		
-		Material previous = matrix.get(z).get(y).get(x).getM();
+		Material previous = matrix.get(z).get(y).get(x).getMaterial();
 		MaterialHolder replacement = new MaterialHolder(m);
 		matrix.get(z).get(y).put(x, replacement);
-		if (previous == Material.AIR && replacement.getM() != Material.AIR) {
+		if (previous == Material.AIR && replacement.getMaterial() != Material.AIR) {
 			count++;
 		}
 	}
@@ -95,9 +70,10 @@ public class Schematic {
 					MaterialHolder mat = matrix.get(keyZ).get(keyY).get(keyX);
 					//Make sure we aren't doing anything we shouldn't
 
-					if (mat.getM().equals(Material.AIR)) {
+					if (mat.getMaterial().equals(Material.AIR)) {
 						continue;
 					}
+
 					//WARNING: DO NOT CHANGE
 					Block b = w.getBlockAt(new Location(w, keyX, keyY, keyZ));
 					if (replaceAirOnly) {
@@ -111,19 +87,19 @@ public class Schematic {
 					 * So if the material previously successfully changed and you want to erase and the material is the same
 					 * material it was changed to previously, then we will revert it back to an AIR block, which it must
 					 * have been (when building the statue, the plugin does not modify non-air blocks)
-					 * If this were somehow triggered too early, nothing would happen as all mat.isSuccess() is false by default 
+					 * If this were somehow triggered too early, nothing would happen as all mat.isSuccess() is false by default
 					 * Please note that you'll also need the "override" permission to overwrite any non-air blocks
 					 */
 					if (eraseMode &&
 							mat.isSuccess() &&
-							b.getBlockData().getMaterial().equals(matrix.get(keyZ).get(keyY).get(keyX).getM())) {
+							b.getBlockData().getMaterial().equals(matrix.get(keyZ).get(keyY).get(keyX).getMaterial())) {
 						b.setType(Material.AIR);
 						continue;
 					} else if (eraseMode) {
 						continue;
 					}
 
-					b.setType(matrix.get(keyZ).get(keyY).get(keyX).getM());
+					b.setType(matrix.get(keyZ).get(keyY).get(keyX).getMaterial());
 					mat.setSuccess(true);
 				}
 			}
@@ -131,7 +107,7 @@ public class Schematic {
 
 		if (!eraseMode) {
 			Log.log("Statue Created");
-	
+
 			Schematic.history.add(this);
 		}
 	}

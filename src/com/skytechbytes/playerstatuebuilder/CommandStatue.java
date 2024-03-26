@@ -62,7 +62,7 @@ public class CommandStatue implements CommandExecutor {
 					} catch (Exception e) {
 						throw new Exception("Invalid non-number parameter value after ':': " + tokenized[1]);
 					}
-				} else if (tokenized.length == 0){
+				} else if (tokenized.length == 0) {
 					throw new Exception("Invalid ':' parameter");
 				} else {
 					params.put(tokenized[0], 0f);
@@ -70,11 +70,11 @@ public class CommandStatue implements CommandExecutor {
 			}
 
 			if (flags.contains("slim")) {
-				new StatueBuildTask(name, new PlayerStatueMaker(p,"slim",null,false,params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
+				new StatueBuildTask(name, new PlayerStatueMaker(p,"slim", null, false, params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
 			} else if (flags.contains("legacy")) {
-				new StatueBuildTask(name, new PlayerStatueMaker(p,"legacy",null,false,params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
+				new StatueBuildTask(name, new PlayerStatueMaker(p,"legacy", null, false, params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
 			} else {
-				new StatueBuildTask(name, new PlayerStatueMaker(p,"default",null,false,params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
+				new StatueBuildTask(name, new PlayerStatueMaker(p,"default", null, false, params)).runTaskAsynchronously(PlayerStatueBuilder.instance);
 			}
 		} catch (Exception e) {
 			sender.sendMessage(ChatColor.RED + "Error! " + e.getMessage());

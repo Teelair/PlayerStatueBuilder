@@ -2,10 +2,6 @@ package com.skytechbytes.playerstatuebuilder.builder;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import org.bukkit.Material;
 /**
@@ -21,10 +17,10 @@ public class Reader {
 		int green = (pixel >> 8) & 0xff;
 		int blue = (pixel) & 0xff;
 
-		return new Color(red,green,blue,alpha);
+		return new Color(red, green, blue, alpha);
 	}
 
-	public Material[][] part(BufferedImage bi,int lx, int ly, int sx, int sy) {
+	public Material[][] part(BufferedImage bi, int lx, int ly, int sx, int sy) {
 		try {
 			bi = bi.getSubimage(lx, ly, sx, sy);
 		} catch (Exception e) {

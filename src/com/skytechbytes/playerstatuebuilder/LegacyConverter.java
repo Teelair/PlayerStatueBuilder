@@ -13,10 +13,9 @@ public class LegacyConverter {
 	 * @param legacy the image to convert
 	 * @param slim type to convert to
 	 * @return converted skin
-	 * @throws Exception during reading the image
-	 */
-	public static BufferedImage convertLegacy(BufferedImage legacy, boolean slim) throws Exception {
-        BufferedImage outImg = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+     */
+	public static BufferedImage convertLegacy(BufferedImage legacy, boolean slim) {
+        BufferedImage outImg = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 		Graphics outGfx = outImg.getGraphics();
 
 		// Copy old layout(for the body, head and right limbs)
@@ -43,18 +42,18 @@ public class LegacyConverter {
 			/*
 			 * A bit more difficult than it seems (slim converter made by SkyTechBytes)
 			 */
-			BufferedImage front = legacy.getSubimage(44, 20, 3, 12);//front
-			BufferedImage inside = legacy.getSubimage(47, 20, 4, 12);//inside
-			BufferedImage back = legacy.getSubimage(51, 20, 3, 12);//back
-			BufferedImage outside = legacy.getSubimage(40, 20, 4, 12);//outside
-			BufferedImage bottom = legacy.getSubimage(47, 16, 3, 4);//bottom
-			BufferedImage top = legacy.getSubimage(44, 16, 3, 4);//top
-			outGfx.drawImage(front, 36+3, 52, -3, 12, null);
-			outGfx.drawImage(inside, 32+4, 52, -4, 12, null);
-			outGfx.drawImage(back,43+3, 52, -3, 12, null);
-			outGfx.drawImage(outside, 39+4, 52, -4, 12, null);
-			outGfx.drawImage(bottom, 39+3, 48, -3, 4, null);
-			outGfx.drawImage(top,36+3, 48, -3, 4, null);
+			BufferedImage front = legacy.getSubimage(44, 20, 3, 12); //front
+			BufferedImage inside = legacy.getSubimage(47, 20, 4, 12); //inside
+			BufferedImage back = legacy.getSubimage(51, 20, 3, 12); //back
+			BufferedImage outside = legacy.getSubimage(40, 20, 4, 12); //outside
+			BufferedImage bottom = legacy.getSubimage(47, 16, 3, 4); //bottom
+			BufferedImage top = legacy.getSubimage(44, 16, 3, 4); //top
+			outGfx.drawImage(front, 36 + 3, 52, -3, 12, null);
+			outGfx.drawImage(inside, 32 + 4, 52, -4, 12, null);
+			outGfx.drawImage(back, 43 + 3, 52, -3, 12, null);
+			outGfx.drawImage(outside, 39 + 4, 52, -4, 12, null);
+			outGfx.drawImage(bottom, 39 + 3, 48, -3, 4, null);
+			outGfx.drawImage(top, 36 + 3, 48, -3, 4, null);
 		}
 
 		return outImg;

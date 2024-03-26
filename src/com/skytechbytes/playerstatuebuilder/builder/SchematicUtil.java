@@ -45,7 +45,7 @@ public class SchematicUtil {
 
 		boolean hasRequired = true;
 
-		HashMap<Material,Integer> blocks = query(s, p);
+		HashMap<Material, Integer> blocks = query(s, p);
 
 		//query the price after block query to ensure correct number of blocks
 		if (!queryPrice(s, p) || getPrice(s) < 0) {
@@ -100,13 +100,13 @@ public class SchematicUtil {
 		return true;
 	}
 
-	public static HashMap<Material,Integer> query(Schematic s, Player p) {
+	public static HashMap<Material, Integer> query(Schematic s, Player p) {
 		int count = 0;
-		HashMap<Material,Integer> blocks = new HashMap<>();
+		HashMap<Material, Integer> blocks = new HashMap<>();
 		for (int keyZ : s.getMatrix().keySet()) {
 			for (int keyY : s.getMatrix().get(keyZ).keySet()) {
 				for (int keyX : s.getMatrix().get(keyZ).get(keyY).keySet()) {
-					Material temp = s.getMatrix().get(keyZ).get(keyY).get(keyX).getM();
+					Material temp = s.getMatrix().get(keyZ).get(keyY).get(keyX).getMaterial();
 					if (temp.equals(Material.AIR)) {
 						continue;
 					}
@@ -130,6 +130,7 @@ public class SchematicUtil {
 					} else {
 						blocks.put(temp, 1);
 					}
+
 					count++;
 				}
 			}

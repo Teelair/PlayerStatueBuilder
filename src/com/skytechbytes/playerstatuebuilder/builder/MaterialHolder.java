@@ -18,7 +18,7 @@ public class MaterialHolder {
 		this.success = success;
 	}
 
-	public Material getM() {
+	public Material getMaterial() {
 		return m;
 	}
 

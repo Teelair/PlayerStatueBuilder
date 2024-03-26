@@ -1,11 +1,7 @@
 package com.skytechbytes.playerstatuebuilder;
 
-import java.awt.image.BufferedImage;
-
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.skytechbytes.playerstatuebuilder.builder.ImageUtil;
 import com.skytechbytes.playerstatuebuilder.builder.StatueMaker;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class StatueBuildTask extends BukkitRunnable {
 	private final String identifier;
@@ -18,11 +14,11 @@ public class StatueBuildTask extends BukkitRunnable {
 	@Override
 	public void run() {
 		try {
-			BufferedImage bi = ImageUtil.deepCopy(Util.getSkinImage(identifier));
-			callback.setImage(bi);
+			callback.setImage(Util.getSkinImage(identifier));
 		} catch (Exception e) {
 			Log.log(e.getMessage());
 		}
+
 		callback.runTask(PlayerStatueBuilder.instance);
 	}
 }

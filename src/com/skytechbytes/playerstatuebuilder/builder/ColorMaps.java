@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Material;
 /**
@@ -16,15 +15,15 @@ import org.bukkit.Material;
  *
  */
 public class ColorMaps {
-	static Map<Color, Material> x = new HashMap<>();
-	static Map<Color, Material> p = new HashMap<>();
-	static Map<Color, Material> t = new HashMap<>();
-	static Map<Color, Material> c = new HashMap<>();
-	static Map<Color, Material> g = new HashMap<>();
-	static Map<Color, Material> w = new HashMap<>();
+	static final Map<Color, Material> x = new HashMap<>();
+	static final Map<Color, Material> p = new HashMap<>();
+	static final Map<Color, Material> t = new HashMap<>();
+	static final Map<Color, Material> c = new HashMap<>();
+	static final Map<Color, Material> g = new HashMap<>();
+	static final Map<Color, Material> w = new HashMap<>();
 	
-	static List<Map<Color, Material>> colorMaps = new ArrayList<>();
-	static List<Integer> activeColorMaps = new ArrayList<>();
+	static final List<Map<Color, Material>> colorMaps = new ArrayList<>();
+	static final List<Integer> activeColorMaps = new ArrayList<>();
 
 	static {
 		x.put(new Color(0xE9ECEC), Material.WHITE_WOOL);
@@ -44,12 +43,12 @@ public class ColorMaps {
 		x.put(new Color(0xA12722), Material.RED_WOOL);
 		x.put(new Color(0x141519), Material.BLACK_WOOL);
 
-		p.put(new Color(157,130,72),Material.OAK_PLANKS);
-		p.put(new Color(184,167,113),Material.BIRCH_PLANKS);
-		p.put(new Color(126,91,48),Material.SPRUCE_PLANKS);
-		p.put(new Color(175,126,89),Material.JUNGLE_PLANKS);
-		p.put(new Color(38,19,2),Material.DARK_OAK_PLANKS);
-		p.put(new Color(184,101,53),Material.ACACIA_PLANKS);
+		p.put(new Color(157, 130, 72), Material.OAK_PLANKS);
+		p.put(new Color(184, 167, 113), Material.BIRCH_PLANKS);
+		p.put(new Color(126, 91, 48), Material.SPRUCE_PLANKS);
+		p.put(new Color(175, 126, 89), Material.JUNGLE_PLANKS);
+		p.put(new Color(38, 19, 2), Material.DARK_OAK_PLANKS);
+		p.put(new Color(184, 101, 53), Material.ACACIA_PLANKS);
 		p.put(new Color(131, 68, 50), Material.MANGROVE_PLANKS);
 
 		/*
@@ -59,23 +58,23 @@ public class ColorMaps {
 		p.put(new Color(50, 134, 132), Material.WARPED_PLANKS);
 		*/
 		
-		t.put(new Color(147,88,61),Material.TERRACOTTA);
-		t.put(new Color(72,57,89),Material.BLUE_TERRACOTTA);
-		t.put(new Color(73,45,27),Material.BROWN_TERRACOTTA);
-		t.put(new Color(71,78,34),Material.GREEN_TERRACOTTA);
-		t.put(new Color(139,53,39),Material.RED_TERRACOTTA);
-		t.put(new Color(27,12,4),Material.BLACK_TERRACOTTA);
-		t.put(new Color(210,180,161),Material.WHITE_TERRACOTTA);
-		t.put(new Color(158,79,27),Material.ORANGE_TERRACOTTA);
-		t.put(new Color(151,88,107),Material.MAGENTA_TERRACOTTA);
-		t.put(new Color(112,107,136),Material.LIGHT_BLUE_TERRACOTTA);
-		t.put(new Color(184,132,25),Material.YELLOW_TERRACOTTA);
-		t.put(new Color(98,112,41),Material.LIME_TERRACOTTA);
-		t.put(new Color(158,74,73),Material.PINK_TERRACOTTA);
-		t.put(new Color(51,32,24),Material.GRAY_TERRACOTTA);
-		t.put(new Color(136,105,96),Material.LIGHT_GRAY_TERRACOTTA);
-		t.put(new Color(88,88,88),Material.CYAN_TERRACOTTA);
-		t.put(new Color(120,68,84),Material.PURPLE_TERRACOTTA);
+		t.put(new Color(147, 88, 61), Material.TERRACOTTA);
+		t.put(new Color(72, 57, 89), Material.BLUE_TERRACOTTA);
+		t.put(new Color(73, 45, 27), Material.BROWN_TERRACOTTA);
+		t.put(new Color(71, 78, 34), Material.GREEN_TERRACOTTA);
+		t.put(new Color(139, 53, 39), Material.RED_TERRACOTTA);
+		t.put(new Color(27, 12, 4), Material.BLACK_TERRACOTTA);
+		t.put(new Color(210, 180, 161), Material.WHITE_TERRACOTTA);
+		t.put(new Color(158, 79, 27), Material.ORANGE_TERRACOTTA);
+		t.put(new Color(151, 88, 107), Material.MAGENTA_TERRACOTTA);
+		t.put(new Color(112, 107, 136), Material.LIGHT_BLUE_TERRACOTTA);
+		t.put(new Color(184, 132, 25), Material.YELLOW_TERRACOTTA);
+		t.put(new Color(98, 112, 41), Material.LIME_TERRACOTTA);
+		t.put(new Color(158, 74, 73), Material.PINK_TERRACOTTA);
+		t.put(new Color(51, 32, 24), Material.GRAY_TERRACOTTA);
+		t.put(new Color(136, 105, 96), Material.LIGHT_GRAY_TERRACOTTA);
+		t.put(new Color(88, 88, 88), Material.CYAN_TERRACOTTA);
+		t.put(new Color(120, 68, 84), Material.PURPLE_TERRACOTTA);
 		
 		c.put(new Color(0xd0d6d7), Material.WHITE_CONCRETE);
 		c.put(new Color(0xe26100), Material.ORANGE_CONCRETE);
@@ -115,11 +114,11 @@ public class ColorMaps {
 		w.put(new Color(0x3E4447), Material.GRAY_WOOL);
 		w.put(new Color(0x141519), Material.BLACK_WOOL);
 		w.put(new Color(0x8E8E86), Material.LIGHT_GRAY_WOOL);
-		w.put(new Color(210,180,161),Material.WHITE_TERRACOTTA);
-		w.put(new Color(51,32,24),Material.GRAY_TERRACOTTA);
-		w.put(new Color(136,105,96),Material.LIGHT_GRAY_TERRACOTTA);
-		w.put(new Color(88,88,88),Material.CYAN_TERRACOTTA);
-		w.put(new Color(27,12,4),Material.BLACK_TERRACOTTA);
+		w.put(new Color(210, 180, 161), Material.WHITE_TERRACOTTA);
+		w.put(new Color(51, 32, 24), Material.GRAY_TERRACOTTA);
+		w.put(new Color(136, 105, 96), Material.LIGHT_GRAY_TERRACOTTA);
+		w.put(new Color(88, 88, 88), Material.CYAN_TERRACOTTA);
+		w.put(new Color(27, 12, 4), Material.BLACK_TERRACOTTA);
 		w.put(new Color(0xd0d6d7), Material.WHITE_CONCRETE);
 		w.put(new Color(0x33373b), Material.GRAY_CONCRETE);
 		w.put(new Color(0x7f7f75), Material.LIGHT_GRAY_CONCRETE);
@@ -132,8 +131,8 @@ public class ColorMaps {
 		colorMaps.add(c);
 		colorMaps.add(g);
 		colorMaps.add(w);
-
 	}
+
 	public static Material getMatchingMaterial(int r, int g, int b, int alpha) {
 		if (alpha < 255) {
 			return Material.AIR;

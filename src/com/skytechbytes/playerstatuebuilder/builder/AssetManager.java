@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -15,22 +16,20 @@ import com.skytechbytes.playerstatuebuilder.Log;
  *
  */
 public class AssetManager {
-	public static HashMap<String,BufferedImage> armor = new HashMap<>();
-	public static HashMap<String,BufferedImage> items = new HashMap<>();
-	private static final String[] armor_materials = {"chainmail","iron","golden","diamond"};
+	public static final Map<String, BufferedImage> armor = new HashMap<>();
+	private static final String[] armor_materials = { "chainmail", "iron", "golden", "diamond", "netherite" };
 	public static void initialize() {
 		for (String material : armor_materials) {
-			
-			load(material + "_armor",armor);
+			load(material + "_armor", armor);
 			
 			//get sub images
-			load(material + "_helmet",armor,material + "_armor",new Rectangle(32,0,32,16));
-			load(material + "_chestplate",armor,material + "_armor",new Rectangle(16,32,48,32));
-			load(material + "_boots",armor,material + "_armor",new Rectangle(0,32,16,32));
+			load(material + "_helmet", armor, material + "_armor", new Rectangle(32, 0, 32, 16));
+			load(material + "_chestplate", armor, material + "_armor", new Rectangle(16, 32, 48, 32));
+			load(material + "_boots", armor, material + "_armor", new Rectangle(0, 32, 16, 32));
 		}
 	}
 
-	public static void load(String name, HashMap<String,BufferedImage> group) {
+	public static void load(String name, Map<String, BufferedImage> group) {
 		try {
 			String file = "/" + name + ".png";
 			Log.log("Loading texture " + file);
@@ -39,36 +38,37 @@ public class AssetManager {
 			Log.log("Failed to load texture " + name + ". Restart the server to fix.");
 		}
 	}
+
 	/*
 	 * So it's like a spritesheet
 	 */
-	public static void load(String name, HashMap<String,BufferedImage> group, String baseImage, Rectangle... subregions) {
+	public static void load(String name, Map<String, BufferedImage> group, String baseImage, Rectangle... subregions) {
 		try {
 			BufferedImage base = group.get(baseImage);
-			
+
 			if (base == null) {
 				return;
 			}
-			
+
 			//Don't forget the A in ARGB (we have alpha)
-			BufferedImage subImage = new BufferedImage(base.getWidth(),base.getHeight(),BufferedImage.TYPE_INT_ARGB);
-			
+			BufferedImage subImage = new BufferedImage(base.getWidth(), base.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
 			Graphics g = subImage.getGraphics();
 			for (Rectangle region : subregions) {
 				g.drawImage(
-						base.getSubimage((int)region.getX(), (int)region.getY(),
-								(int)region.getWidth(), 
-								(int)region.getHeight()),
-						(int)region.getX(), (int)region.getY(), 
+						base.getSubimage((int) region.getX(), (int) region.getY(),
+								(int) region.getWidth(),
+								(int) region.getHeight()),
+						(int) region.getX(), (int) region.getY(),
 						null);
-				
+
 			}
-			
+
 			//definitely does something
 			g.dispose();
-			
+
 			group.put(name, subImage);
-		
+
 		} catch (Exception e) {
 			Log.log("Failed to load texture " + name);
 		}

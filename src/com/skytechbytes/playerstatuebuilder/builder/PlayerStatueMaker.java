@@ -18,7 +18,7 @@ import com.skytechbytes.playerstatuebuilder.PlayerStatueBuilder;
  *
  */
 public class PlayerStatueMaker extends StatueMaker {
-	public static Map<String, Long> cooldowns = new HashMap<>();
+	public static final Map<String, Long> cooldowns = new HashMap<>();
 	
 	private final Player p;
 	private final boolean quote;

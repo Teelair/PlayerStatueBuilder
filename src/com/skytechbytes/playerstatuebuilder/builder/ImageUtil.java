@@ -1,7 +1,6 @@
 package com.skytechbytes.playerstatuebuilder.builder;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 
@@ -12,9 +11,9 @@ import com.jhlabs.image.SaturationFilter;
 
 public class ImageUtil {
 	public static BufferedImage overlayImage(BufferedImage below, BufferedImage above) {
-		BufferedImage newImage = new BufferedImage(below.getWidth(),below.getHeight(),BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newImage = new BufferedImage(below.getWidth(), below.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = newImage.createGraphics();
-		g.drawImage(below,0,0,null);
+		g.drawImage(below, 0, 0, null);
 	    g.drawImage(above, (below.getWidth() - above.getWidth()) / 2,
 	        (below.getHeight() - above.getHeight()) / 2, null);
 	    g.dispose();
@@ -35,19 +34,7 @@ public class ImageUtil {
 	    return b;
 	}
 
-	/**
-	 * Required to un-index a file (change it to RGB mode from Index color mode)
-	 * @param i
-	 * @return
-	 */
-	public static BufferedImage toRGB(Image i) {
-	    BufferedImage rgb = new BufferedImage(i.getWidth(null), i.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	    rgb.createGraphics().drawImage(i, 0, 0, null);
-	    return rgb;
-	}
-	
-	public static BufferedImage applyFilters(BufferedImage bi, LinkedHashMap<String,Float> params) {
-		// BufferedImage newImage = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_ARGB);
+	public static BufferedImage applyFilters(BufferedImage bi, LinkedHashMap<String, Float> params) {
 		for (String key : params.keySet()) {
 			if (key.equalsIgnoreCase("contrast")) {
 				checkParams(key, params.get(key));
@@ -87,8 +74,8 @@ public class ImageUtil {
 	}
 
 	private static void checkParams(String name, Float in) throws IllegalArgumentException {
-		if (in == null || in < (float) 0 || in > (float) 1) {
-			throw new IllegalArgumentException("Parameter " + name + " must be in the range " + (float) 0 + " to " + (float) 1);
+		if (in == null || in < 0 || in > 1) {
+			throw new IllegalArgumentException("Parameter " + name + " must be in the range 0 to 1");
 		}
 	}
 }

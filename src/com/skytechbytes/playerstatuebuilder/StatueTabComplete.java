@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
 public class StatueTabComplete implements TabCompleter {
@@ -40,6 +39,7 @@ public class StatueTabComplete implements TabCompleter {
 		autoCompletions.add("diamond_armor");
 		autoCompletions.add("chainmail_armor");
 		autoCompletions.add("golden_armor");
+		autoCompletions.add("netherite_armor");
 		if (p.hasPermission("playerstatuebuilderx.specialOrientations")) {
 			autoCompletions.add("xy");
 			autoCompletions.add("xz");
