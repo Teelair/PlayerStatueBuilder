@@ -1,4 +1,5 @@
 package com.skytechbytes.playerstatuebuilder;
+
 import com.skytechbytes.playerstatuebuilder.support.PlotSquaredWrapper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;

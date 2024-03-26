@@ -1,4 +1,5 @@
 package com.skytechbytes.playerstatuebuilder.support;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -64,9 +65,6 @@ public class WorldGuardWrapper {
                         return false;
                     }
                 }
-
-                Log.log("Building is OK | " + lesserCorner + "/" + greaterCorner);
-                return true;
             }
 
             Log.log("Building is OK | " + lesserCorner + "/" + greaterCorner);

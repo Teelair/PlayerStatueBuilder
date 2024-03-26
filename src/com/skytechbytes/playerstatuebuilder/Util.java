@@ -40,8 +40,6 @@ public class Util {
 	}
 
 	public static BufferedImage getDiskSkinImage(String name) throws Exception {
-
-
 		BufferedImage bi = null;
 		/*
 		 * The skin is on the local disk in the plugin's data folder.
@@ -62,9 +60,7 @@ public class Util {
 
 
 		try {
-
 			Path customFile = Paths.get(PlayerStatueBuilder.instance.getDataFolder().toURI().resolve(fileName));
-
 
 			bi = ImageIO.read(customFile.toFile());
 
